@@ -125,6 +125,23 @@ public class ReviewController {
         }
         return new ResponseEntity<>(reviews,HttpStatus.OK);
     }
+
+     @GetMapping("api/reviews/specific/{userId}")
+    public ResponseEntity<List<Review>> getUserReviews(@PathVariable String userId) {
+        List<Review> reviews = (List<Review>) reviewRepository.findAll();
+        List<Review> results = new ArrayList<>();;
+        for(Review rv : reviews){
+            User user = userRepository.findById(rv.getUserId()).get();
+            if (user != null && user.getUserId().equals(userId)) {
+                rv.setMovieId(rv.getMovie().getMovieId());
+                rv.setUsername(user.getUserName());
+                results.add(rv);
+            }
+        }
+
+        return new ResponseEntity<>(results,HttpStatus.OK);
+    }
+
     // delete review by reviewId
     @DeleteMapping("api/reviews/{reviewId}")
     public ResponseEntity<HttpStatus> deleteReviewById(@PathVariable(value = "reviewId") String reviewId) {

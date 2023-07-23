@@ -21,7 +21,7 @@ public class MovieGenreDto {
         this.movieId=movieId;
         this.posterUrl = posterUrl;
         this.category = category;
-        
+        this.movieDesc= movieDesc;
     }
 
     public String getTitle() {
