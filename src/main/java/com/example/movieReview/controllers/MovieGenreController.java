@@ -1,5 +1,6 @@
 package com.example.movieReview.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,7 +42,19 @@ public class MovieGenreController {
     public ResponseEntity<List<Genre>> findAllGenre(){
         List<Genre> genres = genreRepository.findAll();
         return new ResponseEntity<>(genres,HttpStatus.OK);
+    }
 
+    @GetMapping("api/genre/movie/{movieId}")
+    public ResponseEntity<List<Genre>> findGenreByMovie(@PathVariable String movieId){
+         List<Genre> allGenres = genreRepository.findAll();
+    List<Genre> movieGenres = new ArrayList<>();
+    for (Genre genre : allGenres) {
+        if (genre.getMovie().getMovieId().equals(movieId)) {
+            movieGenres.add(genre);
+        }
+    }
+
+    return new ResponseEntity<>(movieGenres, HttpStatus.OK);
     }
     //delete genre by genreId
     @DeleteMapping("api/genre/{genreId}")
